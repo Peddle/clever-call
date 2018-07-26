@@ -8,9 +8,10 @@ const app = express();
 
 const twiml = (msg) => `
 <Response>
-    <Gather input="speech">
+    <Gather speechTimeout="auto" timeout="10" input="speech">
       <Say>${msg}</Say>
     </Gather>
+    <Redirect method="GET">http://aaronpeddle.com:3000/listen</Redirect> 
 </Response>
 `
 
@@ -20,7 +21,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.send('Hello World!'));
-
 app.post('/call', (req, res) => {
   console.log(req.body.SpeechResult);
   const message = req.body.SpeechResult;
