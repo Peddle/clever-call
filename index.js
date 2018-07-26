@@ -21,18 +21,15 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
-app.get('/call', (req, res) => {
-  res.set('Content-Type', 'text/xml');
-  res.send(twiml("Good morning. Is your refrigerator running?"));
-});
 app.post('/call', (req, res) => {
   console.log(req.body.SpeechResult);
   const message = req.body.SpeechResult;
-  getCleverBotReply(message).then((reply) => {
+  if(message) getCleverBotReply(message).then((reply) => {
     console.log(reply);
     res.set('Content-Type', 'text/xml');
     res.send(twiml(reply));
   });
+  else res.send(twiml("Good morning. Is your refrigerator running?"));
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
